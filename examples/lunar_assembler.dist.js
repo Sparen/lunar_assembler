@@ -1065,15 +1065,8 @@ function motorizedRoadValuesArray() {
     "secondary_link",
     "tertiary",
     "tertiary_link",
-    "unclassified",
     "residential",
-    "service",
-    "track",
-    "road",
     "busway",
-    "raceway",
-    "escape",
-    "living_street",
   ];
 }
 

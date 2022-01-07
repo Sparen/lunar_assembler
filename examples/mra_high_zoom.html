@@ -1,0 +1,106 @@
+<!--
+    lunar_assembler - tool for generating SVG files from OpenStreetMap data. Available as a website.
+    Copyright (C) 2021 Mateusz Konieczny
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, under version 3 of the
+    License only.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://mapsaregreat.com/style.css">
+    <title>MRA High Zoom - SVG map from OpenStreetMap data</title>
+    <link 
+        rel="stylesheet" 
+        href="lunar_assembler.dist.css"
+    />
+    <script src="lunar_assembler.dist.js"></script>
+</head>
+<body>
+    <div id="main_content_wrap" class="outer"></div>
+    <section id="main_content" class="inner">
+        <p id="instruction_hidden_after_first_generation">Press the rectangle button, select a rectangle on a map and wait. Note that this tool will work well with small areas. Entire cities may work, but will require long processing. Processing entire countries will fail.</p>
+
+        <p>Generation of vector maps from OpenStreetMap data. Supports <a href="https://wiki.openstreetmap.org/wiki/Key:area%3Ahighway">area:highway</a> tagging, works well for tiny areas (single crossing), neighbourhood maps - or of a single forest/airport/etc. Will work for entire town, villages - maybe even entire cities.</p>
+
+        <p>See also <a href=".">other map styles</a>, allowing generation of other maps from the same OpenStreetMap data.</p>
+        
+        <p>(there is more text below map, you can also see an <a href="lunar_assembler_in_action.gif">animation</a> showing how this tool is supposed to work)</p>
+        
+            <center><button id="download_generated_map" style="display: none; margin: 5px auto 5px auto">Download SVG</button></center>
+            <div class="generated_svg_map_within" id="generated_svg_within"></div><!-- styling background of this as white is recommended-->
+            <progress id="progress_bar" value="0" max="100" style="width: 100%"></progress>
+            <div id="log_messages_within"></div>
+            <div id="map" class="leaflet_interactive_map_not_hiding_further_content"></div>
+    
+        <p>
+            <ul>
+                <li>Move map to a small area interesting for you (a single crossing will work, generating a map of Poland will fail).</li>
+                <li>Press the "rectangle" button, choose an area of interest.</li>
+                <li>Wait - waiting several seconds is normal, currently no real progress info is displayed during download. Not even progress bar animation is shown when map is generated in your browser, it may take a bit.</li>
+                <li>The generated map should appear below the map used for selecting. There is also a download button available below the generated map image.</li>
+                <li>Use this map for something!</li>
+            </ul>
+        </p>
+
+        <p>Map style has support for areas such as buildings, water, parks, forests, road areas and linear features such as roads, railways, waterways, taxiway, runways. Produced SVG files can be downloaded.</p>
+
+        <h2>Examples</h2>
+
+        <h2>Even more info</h2>
+        <p>Have fun with using OpenStreetMap data for interesting and/or useful purposes! Just remember that you must mention the source of data in a way visible to whoever will be using it. See <a href="https://www.openstreetmap.org/copyright">this page</a> for details, including cases where it is legally allowed to avoid giving a clear credit (but I encourage to do this in all cases).</p>
+
+        <p>If you liked this tool, something was confusing - you are welcomed to comment about it <a href="https://github.com/matkoniecz/lunar_assembler/issues/new">by creating a public issue</a> or by sending me an <a href="mailto:matkoniecz@tutanota.com">email</a>. You can also post a comment in <a href="https://www.openstreetmap.org/user/Mateusz%20Konieczny/diary/396309">OSM diary entry</a>.</p>
+    
+        <p>If you want to help mapping and you are unsure how to start - you can try <a href="https://github.com/streetcomplete/StreetComplete#download">StreetComplete</a> (an Android app) allowing contributions, with sole requirements being (1) ability to read (2) ability to see things (3) ability to create an OpenStreetMap account.</p>
+        
+        <p>If you want to map something (map missing objects, fix a mistake) and you are unsure how to start - visit <a href="https://www.openstreetmap.org/">openstreetmap.org</a>, zoom in to interesting area and press the "edit" button and follow instructions. You can contact the OpenStreetMap community using one of global or local channels listed at <a href="https://community.osm.be/">community.osm.be</a> and ask for help.</p>
+        
+        <p>You can visit <a href="https://github.com/matkoniecz/lunar_assembler">matkoniecz/lunar_assembler</a> to see code, obtain code or contribute. This software is <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPLv3</a> licenced.</p>
+
+        <h2>Legend</h2>
+        <div>
+        <p>Compared to the General High Zoom, the following are not included:</p>
+        <ul>
+            <li>All Barriers and Buildings</li>
+            <li>All Railways</li>
+            <li>Roads: Service, Raceway, Escape, Living Street, Track, Unclassified, Road (Note: These had to be overridden in lunar_assembler.dist.js). Road widths also adjusted based on road type. All road areas removed.</li>
+            <li>All Pedestrian and Cycling Infrastructure</li>
+            <li>Bus Stops and Taxi Stands</li>
+            <li>Non-Industrial, Forest/Wood or Park Landuses inc. Bare Rock</li>
+            <li>Ditches, Streams, and Riverbanks</li>
+        </ul>
+        <p>Compared to the General High Zoom, the following colors have been changed:</p>
+        <ul>
+            <li>Water: blue -> #CCDDFF. River and Canal sizes also reduced to not overflow into neighboring roads.</li>
+            <li>Roads: #555555 -> #CCCCCC</li>
+            <li>Bridge Outline: gray -> #BBBBBB</li>
+            <li>Forest/Wood: green -> #66ffAA</li>
+        </ul>
+        </div>
+        <p id="automatically_generated_legend"></p>
+
+        
+    </section>
+
+    <!-- actual code -->
+    <script src="mra_high_zoom_map_style.js"></script>
+    <script>
+        document.getElementById("automatically_generated_legend").innerHTML = generateLegend(mraHighZoomMapStyle().unifiedStyling())
+        // must be executed after imports and once passed ids exist -->
+        initializeLunarAssembler({mapStyles: [mraHighZoomMapStyle()], mapDivId: 'map', downloadTriggerId: "download_generated_map", progressBarId: "progress_bar", mapOutputHolderId: "generated_svg_within", logOutputId: "log_messages_within", lat: 50.05514, lon: 19.92824, zoom: 18});
+    </script>
+</body>
+</html>
