@@ -91,7 +91,7 @@ function mraHighZoomMapStyle() {
       returned = [];
 
       returned.push({
-        line_color: "#CCCCCC",
+        line_color: "#DDDDDD",
         line_width: 2,
         description: "linear representation of a motorized road",
         matches: [
@@ -106,7 +106,7 @@ function mraHighZoomMapStyle() {
         ],
       });
       returned.push({
-        line_color: "#CCCCCC",
+        line_color: "#DDDDDD",
         line_width: 1,
         description: "linear representation of a motorized road",
         matches: [
@@ -139,7 +139,7 @@ function mraHighZoomMapStyle() {
             matches: [{ key: "waterway", value: "canal" }],
           },
           {
-            area_color: "#66ffAA",
+            area_color: "#88FFCC",
             description: "tree-covered land",
             matches: [
               { key: "natural", value: "wood" },
@@ -169,18 +169,18 @@ function mraHighZoomMapStyle() {
             ],
           },
           {
-            area_color: "#BBBBBB",
+            area_color: "#CCCCCC",
             description: "bridge outline",
             matches: [{ key: "man_made", value: "bridge" }],
           },
           {
-            line_color: "purple",
+            line_color: "#F0A0F0",
             line_width: 5,
             description: "runway",
             matches: [{ key: "aeroway", value: "runway" }],
           },
           {
-            line_color: "purple",
+            line_color: "#F0A0F0",
             line_width: 2,
             description: "taxiway",
             matches: [{ key: "aeroway", value: "taxiway" }],
