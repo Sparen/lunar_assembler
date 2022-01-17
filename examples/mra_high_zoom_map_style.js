@@ -128,13 +128,13 @@ function mraHighZoomMapStyle() {
           },
           {
             line_color: "#CCDDFF",
-            line_width: 6,
+            line_width: 4,
             description: "linear representation of a river",
             matches: [{ key: "waterway", value: "river" }],
           },
           {
             line_color: "#CCDDFF",
-            line_width: 4,
+            line_width: 2,
             description: "linear representation of a canal, assumed to be large",
             matches: [{ key: "waterway", value: "canal" }],
           },
